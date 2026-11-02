@@ -1,94 +1,20 @@
+{% extends 'home/base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Category | MyPOS</title>
+{% block title %}Edit Category | MyPOS{% endblock %}
+{% block page_title %}Edit Category{% endblock %}
+{% block breadcrumbs %}<li class="breadcrumb-item"><a href="{% url 'category_list' %}">Categories</a></li><li class="breadcrumb-item active" aria-current="page">Edit</li>{% endblock %}
 
-    <style>
-        * { box-sizing: border-box; }
-
-        body {
-            background: #10131c;
-            color: white;
-            font-family: Arial, sans-serif;
-            padding: 30px;
-        }
-
-        .card {
-            max-width: 500px;
-            margin: 70px auto;
-            padding: 30px;
-            background: #191e2b;
-            border: 1px solid #303748;
-            border-radius: 12px;
-        }
-
-        h2 { margin-bottom: 25px; }
-
-        label {
-            display: block;
-            margin: 18px 0 9px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 13px;
-            background: #10131c;
-            color: white;
-            border: 1px solid #343b50;
-            border-radius: 7px;
-        }
-
-        button, a {
-            display: inline-block;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 7px;
-            text-decoration: none;
-            cursor: pointer;
-            color: white;
-        }
-
-        button { background: #7857ff; }
-        a { background: #343b50; }
-
-        .errorlist {
-            color: #f87171;
-            list-style: none;
-            margin-top: 7px;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="card">
-
-    <h2>Edit Category</h2>
-
-    <form method="POST">
-
-        {% csrf_token %}
-
-        <label>Category Name</label>
-        {{ form.name }}
-        {{ form.name.errors }}
-
-        <label>Status</label>
-        {{ form.status }}
-        {{ form.status.errors }}
-
-        <br><br>
-
-        <button type="submit">Update Category</button>
-
-        <a href="{% url 'category_list' %}">Cancel</a>
-
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-7 col-xl-6">
+  <div class="card card-primary card-outline">
+    <div class="card-header"><h3 class="card-title">Update {{ category.name }}</h3></div>
+    <form method="post">{% csrf_token %}
+      <div class="card-body">
+        <div class="mb-3"><label for="{{ form.name.id_for_label }}" class="form-label">Category name</label>{{ form.name }}{{ form.name.errors }}</div>
+        <div class="mb-3"><label for="{{ form.status.id_for_label }}" class="form-label">Status</label>{{ form.status }}{{ form.status.errors }}</div>
+      </div>
+      <div class="card-footer d-flex gap-2"><button type="submit" class="btn btn-primary">Save changes</button><a href="{% url 'category_list' %}" class="btn btn-outline-secondary">Cancel</a></div>
     </form>
-
-</div>
-
-</body>
-</html>
+  </div>
+</div></div>
+{% endblock %}
