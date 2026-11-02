@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Category | MyPOS</title>
+
+    <style>
+        body {
+            background: #10131c;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 40px 15px;
+        }
+
+        .card {
+            max-width: 450px;
+            margin: 100px auto;
+            padding: 35px;
+            text-align: center;
+            background: #191e2b;
+            border: 1px solid #343b50;
+            border-radius: 12px;
+        }
+
+        h2 { margin-bottom: 20px; }
+
+        p {
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+
+        button, a {
+            display: inline-block;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 7px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button { background: #dc2626; }
+        a { background: #343b50; }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>Delete Category?</h2>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ category.name }}</strong>?
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <button type="submit">Yes, Delete</button>
+
+        <a href="{% url 'category_list' %}">Cancel</a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
