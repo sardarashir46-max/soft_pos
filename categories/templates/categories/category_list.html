@@ -5,33 +5,87 @@
 {% block breadcrumbs %}<li class="breadcrumb-item active" aria-current="page">Categories</li>{% endblock %}
 
 {% block content %}
-<div class="row g-3 mb-3">
-  <div class="col-md-4"><div class="small-box text-bg-primary"><div class="inner"><h3>{{ total_categories }}</h3><p>Total categories</p></div><i class="small-box-icon bi bi-tags"></i></div></div>
-  <div class="col-md-4"><div class="small-box text-bg-success"><div class="inner"><h3>{{ active_categories }}</h3><p>Active categories</p></div><i class="small-box-icon bi bi-check-circle"></i></div></div>
-  <div class="col-md-4"><div class="small-box text-bg-secondary"><div class="inner"><h3>{{ inactive_categories }}</h3><p>Inactive categories</p></div><i class="small-box-icon bi bi-pause-circle"></i></div></div>
-</div>
-<div class="row g-3">
-  <div class="col-xl-4">
-    <div class="card card-primary card-outline">
-      <div class="card-header"><h3 class="card-title">Add category</h3></div>
-      <form method="post">{% csrf_token %}
-        <div class="card-body">
-          <div class="mb-3"><label for="{{ form.name.id_for_label }}" class="form-label">Category name</label>{{ form.name }}{{ form.name.errors }}</div>
-          <div class="mb-3"><label for="{{ form.status.id_for_label }}" class="form-label">Status</label>{{ form.status }}{{ form.status.errors }}</div>
-        </div>
-        <div class="card-footer"><button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Save category</button></div>
-      </form>
-    </div>
+<div class="card card-primary card-outline mb-4">
+  <div class="card-header">
+    <h3 class="card-title">Add category</h3>
   </div>
-  <div class="col-xl-8">
-    <div class="card">
-      <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2"><h3 class="card-title">All categories</h3>
-        <form method="get" class="d-flex gap-2" role="search"><label for="category-search" class="visually-hidden">Search categories</label><input id="category-search" class="form-control form-control-sm" type="search" name="search" placeholder="Search categories" value="{{ search_query }}"><button class="btn btn-sm btn-outline-primary" type="submit">Search</button></form>
+  <form method="post">
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label for="{{ form.name.id_for_label }}" class="form-label">Category name</label>
+          {{ form.name }}
+          {{ form.name.errors }}
+        </div>
+        <div class="col-md-4">
+          <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+          {{ form.status }}
+          {{ form.status.errors }}
+        </div>
       </div>
-      <div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
-        <thead><tr><th scope="col">ID</th><th scope="col">Category</th><th scope="col">Status</th><th scope="col" class="text-end">Actions</th></tr></thead>
-        <tbody>{% for category in categories %}<tr><td>{{ category.id }}</td><td class="fw-semibold">{{ category.name }}</td><td>{% if category.status %}<span class="badge text-bg-success">Active</span>{% else %}<span class="badge text-bg-secondary">Inactive</span>{% endif %}</td><td class="text-end text-nowrap"><a href="{% url 'category_edit' category.id %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil me-1"></i>Edit</a> <a href="{% url 'category_delete' category.id %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a></td></tr>{% empty %}<tr><td colspan="4" class="text-center text-body-secondary py-4">No categories found.</td></tr>{% endfor %}</tbody>
-      </table></div></div>
+    </div>
+    <div class="card-footer d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-lg me-1" aria-hidden="true"></i>Save
+      </button>
+      <button type="reset" class="btn btn-outline-secondary">
+        <i class="bi bi-x-lg me-1" aria-hidden="true"></i>Cancel
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <h3 class="card-title">Categories</h3>
+    <form method="get" class="d-flex gap-2" role="search">
+      <label for="category-search" class="visually-hidden">Search categories</label>
+      <input id="category-search" class="form-control form-control-sm" type="search" name="search" placeholder="Search categories" value="{{ search_query }}">
+      <button class="btn btn-sm btn-outline-primary" type="submit">
+        <i class="bi bi-search me-1" aria-hidden="true"></i>Search
+      </button>
+    </form>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Category</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for category in categories %}
+          <tr>
+            <td>{{ category.id }}</td>
+            <td class="fw-semibold">{{ category.name }}</td>
+            <td>
+              {% if category.status %}
+                <span class="badge text-bg-success">Active</span>
+              {% else %}
+                <span class="badge text-bg-secondary">Inactive</span>
+              {% endif %}
+            </td>
+            <td class="text-end text-nowrap">
+              <a href="{% url 'category_edit' category.id %}" class="btn btn-sm btn-outline-primary" title="Edit {{ category.name }}" aria-label="Edit {{ category.name }}">
+                <i class="bi bi-pencil" aria-hidden="true"></i>
+              </a>
+              <a href="{% url 'category_delete' category.id %}" class="btn btn-sm btn-outline-danger" title="Delete {{ category.name }}" aria-label="Delete {{ category.name }}">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center text-body-secondary py-4">No categories found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
